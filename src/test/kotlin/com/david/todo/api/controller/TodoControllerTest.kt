@@ -30,7 +30,7 @@ class TodoControllerTest {
             .expectStatus().isOk
             .expectBodyList<TodoResponse>()
             .consumeWith<WebTestClient.ListBodySpec<TodoResponse>> {
-                print("Get todo tist Response body " + it.responseBody)
+                print("Get todo list Response body " + it.responseBody)
                 it.responseBody?.containsAll(getTodoList())?.let { list -> assert(list) }
             }
     }
