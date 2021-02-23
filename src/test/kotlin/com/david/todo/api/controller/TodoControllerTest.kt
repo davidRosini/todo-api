@@ -41,7 +41,7 @@ class TodoControllerTest {
     fun testGetById() {
         webTestClient.get()
             .uri(URI_ID_1)
-            .accept(MediaType.APPLICATION_NDJSON)
+            .accept(MediaType.APPLICATION_JSON)
             .exchange()
             .expectStatus().isOk
             .expectBody<TodoResponse>()
@@ -49,6 +49,44 @@ class TodoControllerTest {
                 LOG.info("== Response of todo item: {} ==", it.responseBody)
                 assert(getTodo() == it.responseBody)
             }
+    }
+
+    @Test
+    fun testPostTodo() {
+        webTestClient.post()
+            .bodyValue(getTodo())
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectStatus().isCreated
+            .expectBody<TodoResponse>()
+            .consumeWith {
+                LOG.info("== Response of todo item: {} ==", it.responseBody)
+                assert(getTodo() == it.responseBody)
+            }
+    }
+
+    @Test
+    fun testPutTodo() {
+        webTestClient.put()
+            .uri(URI_ID_1)
+            .bodyValue(getTodo())
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectStatus().isOk
+            .expectBody<TodoResponse>()
+            .consumeWith {
+                LOG.info("== Response of todo item: {} ==", it.responseBody)
+                assert(getTodo() == it.responseBody)
+            }
+    }
+
+    @Test
+    fun testDeleteTodo() {
+        webTestClient.delete()
+            .uri(URI_ID_1)
+            .accept(MediaType.APPLICATION_JSON)
+            .exchange()
+            .expectStatus().isNoContent
     }
 
     companion object {

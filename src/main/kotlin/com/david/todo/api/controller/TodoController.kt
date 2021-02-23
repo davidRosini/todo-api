@@ -41,6 +41,7 @@ class TodoController {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     fun save(@RequestBody todo: Mono<TodoRequest>): Mono<TodoResponse> {
         return todo.map { TodoResponse(1, it.item) }
     }
