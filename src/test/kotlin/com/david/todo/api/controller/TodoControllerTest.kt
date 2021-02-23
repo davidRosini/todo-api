@@ -32,7 +32,7 @@ class TodoControllerTest {
             .expectStatus().isOk
             .expectBodyList<TodoResponse>()
             .consumeWith<WebTestClient.ListBodySpec<TodoResponse>> {
-                LOG.info("== Response of todo itens: {} ==", it.responseBody)
+                LOG.info("== Response get all todo itens: {} ==", it.responseBody)
                 it.responseBody?.containsAll(getTodoList())?.let { list -> assert(list) }
             }
     }
@@ -46,7 +46,7 @@ class TodoControllerTest {
             .expectStatus().isOk
             .expectBody<TodoResponse>()
             .consumeWith {
-                LOG.info("== Response of todo item: {} ==", it.responseBody)
+                LOG.info("== Response get todo item: {} ==", it.responseBody)
                 assert(getTodo() == it.responseBody)
             }
     }
@@ -60,7 +60,7 @@ class TodoControllerTest {
             .expectStatus().isCreated
             .expectBody<TodoResponse>()
             .consumeWith {
-                LOG.info("== Response of todo item: {} ==", it.responseBody)
+                LOG.info("== Response post todo item: {} ==", it.responseBody)
                 assert(getTodo() == it.responseBody)
             }
     }
@@ -75,7 +75,7 @@ class TodoControllerTest {
             .expectStatus().isOk
             .expectBody<TodoResponse>()
             .consumeWith {
-                LOG.info("== Response of todo item: {} ==", it.responseBody)
+                LOG.info("== Response put todo item: {} ==", it.responseBody)
                 assert(getTodo() == it.responseBody)
             }
     }
