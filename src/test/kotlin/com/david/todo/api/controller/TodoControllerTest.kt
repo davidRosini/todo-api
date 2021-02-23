@@ -40,7 +40,7 @@ class TodoControllerTest {
     @Test
     fun testGetById() {
         webTestClient.get()
-            .uri("/1")
+            .uri(URI_ID_1)
             .accept(MediaType.APPLICATION_NDJSON)
             .exchange()
             .expectStatus().isOk
@@ -55,6 +55,7 @@ class TodoControllerTest {
         val LOG by logger()
 
         const val TODO_BASE_URI = "/todo"
+        const val URI_ID_1 = "/1"
 
         fun getTodoList() = listOf(
             TodoResponse(1, "Item 1"),
