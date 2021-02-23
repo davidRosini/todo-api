@@ -27,7 +27,7 @@ class TodoController {
 
     @GetMapping(produces = [MediaType.APPLICATION_NDJSON_VALUE])
     fun findAll(): Flux<TodoResponse> {
-        LOG.info("== Calling find all todo itens ==")
+        LOG.info("== Calling to find all todo itens ==")
         return Flux.just(
             TodoResponse(1, "Item 1"),
             TodoResponse(2, "Item 2"),
@@ -37,23 +37,28 @@ class TodoController {
 
     @GetMapping("/{id}")
     fun findById(@PathVariable id: String): Mono<TodoResponse> {
+        LOG.info("== Calling to find a todo by id=[$id] ==")
         return Mono.just(TodoResponse(1, "Item 1"))
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun save(@RequestBody todo: Mono<TodoRequest>): Mono<TodoResponse> {
+        LOG.info("== Calling to create a new todo ==")
         return todo.map { TodoResponse(1, it.item) }
+            .doOnNext { t -> LOG.info("== Todo created response=[$t] ==") }
     }
 
     @PutMapping("/{id}")
     fun update(@PathVariable id: String, @RequestBody todo: Mono<TodoRequest>): Mono<TodoResponse> {
+        LOG.info("== Calling to update a todo by id=[$id] ==")
         return todo.map { TodoResponse(1, it.item) }
+            .doOnNext { t -> LOG.info("== Todo updated response=[$t] ==") }
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun delete(@PathVariable id: String) {
-        // TODO implement delete todo item
+        LOG.info("== Calling to delete a todo by id=[$id] ==")
     }
 }
