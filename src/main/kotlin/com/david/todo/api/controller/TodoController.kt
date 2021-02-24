@@ -34,10 +34,7 @@ class TodoController(
     fun findAll(): Flux<TodoResponse> {
         LOG.info("== Calling service to find all todo itens ==")
         return service.findAll()
-            .map {
-                LOG.info(it.toString())
-                translator.translate(it)
-            }
+            .map { translator.translate(it) }
     }
 
     @GetMapping("/{id}")
