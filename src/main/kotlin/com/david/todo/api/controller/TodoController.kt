@@ -2,7 +2,9 @@ package com.david.todo.api.controller
 
 import com.david.todo.api.controller.request.TodoRequest
 import com.david.todo.api.controller.response.TodoResponse
+import com.david.todo.api.service.TodoService
 import com.david.todo.helper.logger
+import com.david.todo.translator.TodoDTOToResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -19,7 +21,10 @@ import reactor.core.publisher.Mono
 
 @RestController
 @RequestMapping("todo")
-class TodoController {
+class TodoController(
+    val service: TodoService,
+    val translator: TodoDTOToResponse
+) {
 
     companion object {
         val LOG by logger()
@@ -27,12 +32,12 @@ class TodoController {
 
     @GetMapping(produces = [MediaType.APPLICATION_NDJSON_VALUE])
     fun findAll(): Flux<TodoResponse> {
-        LOG.info("== Calling to find all todo itens ==")
-        return Flux.just(
-            TodoResponse(1, "Item 1"),
-            TodoResponse(2, "Item 2"),
-            TodoResponse(3, "Item 3")
-        )
+        LOG.info("== Calling service to find all todo itens ==")
+        return service.findAll()
+            .map {
+                LOG.info(it.toString())
+                translator.translate(it)
+            }
     }
 
     @GetMapping("/{id}")

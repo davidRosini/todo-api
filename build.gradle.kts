@@ -6,6 +6,7 @@ plugins {
 	id("org.asciidoctor.convert") version "1.5.8"
 	kotlin("jvm") version "1.4.30"
 	kotlin("plugin.spring") version "1.4.30"
+	kotlin("kapt") version "1.4.30"
 }
 
 group = "com.david"
@@ -27,9 +28,15 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+
+	compileOnly("org.mapstruct:mapstruct:1.4.2.Final")
+
+	kapt("org.mapstruct:mapstruct-processor:1.4.2.Final")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("org.springframework.restdocs:spring-restdocs-webtestclient")
+	testImplementation("org.mapstruct:mapstruct:1.4.2.Final")
 }
 
 tasks.withType<KotlinCompile> {
