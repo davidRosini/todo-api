@@ -58,3 +58,14 @@ tasks.asciidoctor {
 	project.property("snippetsDir")?.let { inputs.dir(it) }
 	dependsOn(tasks.test)
 }
+
+tasks.register("bootRunLocal") {
+	group = "application"
+	description = "Runs the Spring Boot application with the local profile"
+	doFirst {
+		tasks.bootRun.configure {
+			systemProperty("spring.profiles.active", "local")
+		}
+	}
+	finalizedBy("bootRun")
+}

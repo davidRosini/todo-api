@@ -1,3 +1,9 @@
+#webclient
+client:
+  timeout:
+    connect: 10000
+    read: 5000
+
 #logging
 logging:
   level:
@@ -7,9 +13,3 @@ logging:
     reactor.netty.http.client: INFO
   pattern:
     console: '%highlight(<<%-5level>>) %d{HH:mm:ss:SSS} [%thread] %magenta(%c{0}.%M) - %m%n'
-
-#webclient
-client:
-  timeout:
-    connect: 10000
-    read: 5000
