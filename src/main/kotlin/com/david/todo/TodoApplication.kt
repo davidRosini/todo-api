@@ -9,5 +9,5 @@ import org.springframework.web.reactive.config.EnableWebFlux
 class TodoApplication
 
 fun main(args: Array<String>) {
-	runApplication<TodoApplication>(*args)
+    runApplication<TodoApplication>(*args)
 }

@@ -8,7 +8,7 @@ import org.springframework.test.context.ActiveProfiles
 @ActiveProfiles("test")
 class TodoApplicationTests {
 
-	@Test
-	fun contextLoads() {
-	}
+    @Test
+    fun contextLoads() {
+    }
 }

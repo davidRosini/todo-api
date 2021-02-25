@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 
 @Service
-class TodoServiceImpl: TodoService {
+class TodoServiceImpl : TodoService {
 
     companion object {
         val LOG by logger()
@@ -16,9 +16,9 @@ class TodoServiceImpl: TodoService {
     override fun findAll(): Flux<TodoDTO> {
         LOG.info("== Calling DAO to find all todo itens ==")
         return Flux.just(
-            TodoDTO(1, "Item 1"),
-            TodoDTO(2, "Item 2"),
-            TodoDTO(3, "Item 3")
+                TodoDTO(1, "Item 1"),
+                TodoDTO(2, "Item 2"),
+                TodoDTO(3, "Item 3")
         )
     }
 }

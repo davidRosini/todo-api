@@ -7,6 +7,7 @@ import com.david.todo.helper.logger
 import com.david.todo.translator.TodoDTOToResponse
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.util.UriComponentsBuilder
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
@@ -44,11 +46,20 @@ class TodoController(
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    fun save(@RequestBody todo: Mono<TodoRequest>): Mono<TodoResponse> {
+    fun save(
+        uriComponentsBuilder: UriComponentsBuilder,
+        @RequestBody todo: Mono<TodoRequest>
+    ): Mono<ResponseEntity<TodoResponse>> {
         LOG.info("== Calling to create a new todo ==")
         return todo.map { TodoResponse(1, it.item) }
             .doOnNext { t -> LOG.info("== Todo created response=[$t] ==") }
+            .flatMap { t ->
+                Mono.just(
+                    ResponseEntity
+                        .created(uriComponentsBuilder.path("/{id}").buildAndExpand(t.id).toUri())
+                        .body(t)
+                )
+            }
     }
 
     @PutMapping("/{id}")
