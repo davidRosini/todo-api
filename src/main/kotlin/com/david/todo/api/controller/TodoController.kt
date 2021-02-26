@@ -4,7 +4,7 @@ import com.david.todo.api.controller.request.TodoRequest
 import com.david.todo.api.controller.response.TodoResponse
 import com.david.todo.api.service.TodoService
 import com.david.todo.helper.logger
-import com.david.todo.translator.TodoDTOToResponse
+import com.david.todo.translator.TodoDTOTranslator
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono
 @RequestMapping("todo")
 class TodoController(
     val service: TodoService,
-    val translator: TodoDTOToResponse
+    val translator: TodoDTOTranslator
 ) {
 
     companion object {
@@ -40,9 +40,10 @@ class TodoController(
     }
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable id: String): Mono<TodoResponse> {
+    fun findById(@PathVariable id: Long): Mono<TodoResponse> {
         LOG.info("== Calling to find a todo by id=[$id] ==")
-        return Mono.just(TodoResponse(1, "Item 1"))
+        return service.findById(id)
+                .map { translator.translate(it) }
     }
 
     @PostMapping
@@ -51,7 +52,8 @@ class TodoController(
         @RequestBody todo: Mono<TodoRequest>
     ): Mono<ResponseEntity<TodoResponse>> {
         LOG.info("== Calling to create a new todo ==")
-        return todo.map { TodoResponse(1, it.item) }
+        return todo.flatMap { t -> service.save(translator.translate(t)) }
+                .map { t -> translator.translate(t) }
             .doOnNext { t -> LOG.info("== Todo created response=[$t] ==") }
             .flatMap { t ->
                 Mono.just(
