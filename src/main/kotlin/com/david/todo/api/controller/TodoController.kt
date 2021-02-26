@@ -54,14 +54,14 @@ class TodoController(
         LOG.info("== Calling to create a new todo ==")
         return todo.flatMap { t -> service.save(translator.translate(t)) }
                 .map { t -> translator.translate(t) }
-            .doOnNext { t -> LOG.info("== Todo created response=[$t] ==") }
-            .flatMap { t ->
-                Mono.just(
-                    ResponseEntity
-                        .created(uriComponentsBuilder.path("/{id}").buildAndExpand(t.id).toUri())
-                        .body(t)
-                )
-            }
+                .doOnNext { t -> LOG.info("== Todo created response=[$t] ==") }
+                .flatMap { t ->
+                    Mono.just(ResponseEntity.created(uriComponentsBuilder.path("/{id}")
+                            .buildAndExpand(t.id)
+                            .toUri())
+                            .body(t)
+            )
+        }
     }
 
     @PutMapping("/{id}")
