@@ -8,7 +8,6 @@ import io.swagger.v3.oas.models.info.License
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 
-
 @Configuration
 class OpenAPIConfig {
 
