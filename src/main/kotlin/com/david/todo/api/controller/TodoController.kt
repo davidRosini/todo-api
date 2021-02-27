@@ -8,15 +8,7 @@ import com.david.todo.translator.TodoDTOTranslator
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -34,7 +26,7 @@ class TodoController(
 
     @GetMapping(produces = [MediaType.APPLICATION_NDJSON_VALUE])
     fun findAll(): Flux<TodoResponse> {
-        LOG.info("== Calling service to find all todo itens ==")
+        LOG.info("== Calling service to find all todo items ==")
         return service.findAll()
             .map { translator.translate(it) }
     }
@@ -65,10 +57,11 @@ class TodoController(
     }
 
     @PutMapping("/{id}")
-    fun update(@PathVariable id: String, @RequestBody todo: Mono<TodoRequest>): Mono<TodoResponse> {
+    fun update(@PathVariable id: Long, @RequestBody todo: Mono<TodoRequest>): Mono<TodoResponse> {
         LOG.info("== Calling to update a todo by id=[$id] ==")
-        return todo.map { TodoResponse(1, it.item) }
-            .doOnNext { t -> LOG.info("== Todo updated response=[$t] ==") }
+        return todo.flatMap { t -> service.update(id, translator.translate(t)) }
+                .map { t -> translator.translate(t) }
+                .doOnNext { t -> LOG.info("== Todo updated response=[$t] ==") }
     }
 
     @DeleteMapping("/{id}")

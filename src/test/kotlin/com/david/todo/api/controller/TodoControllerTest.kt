@@ -106,6 +106,8 @@ class TodoControllerTest {
 
     @Test
     fun testPutTodo() {
+        `when`(service.update(anyLong(), any())).thenReturn(Mono.just(getTodoDTO()))
+
         webTestClient.put()
                 .uri(URI_ID_1)
                 .bodyValue(getTodoRequest())

@@ -11,4 +11,6 @@ interface TodoService {
     fun findById(id: Long): Mono<TodoDTO>
 
     fun save(todo: TodoDTO): Mono<TodoDTO>
+
+    fun update(id: Long, todo: TodoDTO): Mono<TodoDTO>
 }

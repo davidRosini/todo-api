@@ -15,7 +15,7 @@ class TodoServiceImpl : TodoService {
     }
 
     override fun findAll(): Flux<TodoDTO> {
-        LOG.info("== Calling DAO to find all todo itens ==")
+        LOG.info("== Calling DAO to find all todos ==")
         return Flux.just(
                 TodoDTO(1, "Item 1"),
                 TodoDTO(2, "Item 2"),
@@ -24,10 +24,18 @@ class TodoServiceImpl : TodoService {
     }
 
     override fun findById(id: Long): Mono<TodoDTO> {
+        LOG.info("== Calling DAO to find item by id=[$id] ==")
         return Mono.just(TodoDTO(1, "Item 1"))
     }
 
     override fun save(todo: TodoDTO): Mono<TodoDTO> {
+        LOG.info("== Calling DAO to save todo=[$todo] ==")
         return Mono.just(TodoDTO(1, todo.item))
+    }
+
+    override fun update(id: Long, todo: TodoDTO): Mono<TodoDTO> {
+        LOG.info("== Calling DAO to update by id=[$id], todo=[$todo] ==")
+        return findById(id)
+            .flatMap { t -> t.item = todo.item; save(t) }
     }
 }
