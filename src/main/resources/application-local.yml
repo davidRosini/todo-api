@@ -1,0 +1,27 @@
+server:
+  port: 8081
+
+#webclient
+client:
+  timeout:
+    connect: 10000
+    read: 5000
+
+#actuator
+management:
+  endpoints.web.base-path: /
+
+springdoc:
+  version: '1.5.4'
+  api-docs:
+    path: /api-docs
+
+#logging
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    br.com.amedigital: DEBUG
+    reactor.netty.http.client: INFO
+  pattern:
+    console: '%highlight(<<%-5level>>) %d{HH:mm:ss:SSS} [%thread] %magenta(%c{0}.%M) - %m%n'

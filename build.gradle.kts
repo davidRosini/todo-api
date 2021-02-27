@@ -6,6 +6,7 @@ plugins {
 	id("org.asciidoctor.convert") version "1.5.8"
 	kotlin("jvm") version "1.4.30"
 	kotlin("plugin.spring") version "1.4.30"
+	kotlin("kapt") version "1.4.30"
 }
 
 group = "com.david"
@@ -27,9 +28,17 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+	implementation("org.springdoc:springdoc-openapi-webflux-ui:1.5.4")
+
+	compileOnly("org.mapstruct:mapstruct:1.4.2.Final")
+
+	kapt("org.mapstruct:mapstruct-processor:1.4.2.Final")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("io.projectreactor:reactor-test")
 	testImplementation("org.springframework.restdocs:spring-restdocs-webtestclient")
+	testImplementation("org.mapstruct:mapstruct:1.4.2.Final")
+	testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 }
 
 tasks.withType<KotlinCompile> {
@@ -50,4 +59,15 @@ tasks.test {
 tasks.asciidoctor {
 	project.property("snippetsDir")?.let { inputs.dir(it) }
 	dependsOn(tasks.test)
+}
+
+tasks.register("bootRunLocal") {
+	group = "application"
+	description = "Runs the Spring Boot application with the local profile"
+	doFirst {
+		tasks.bootRun.configure {
+			systemProperty("spring.profiles.active", "local")
+		}
+	}
+	finalizedBy("bootRun")
 }
