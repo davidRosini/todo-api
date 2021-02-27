@@ -4,6 +4,11 @@ client:
     connect: 10000
     read: 5000
 
+springdoc:
+  version: '1.5.4'
+  api-docs:
+    path: /api-docs
+
 #logging
 logging:
   level:
