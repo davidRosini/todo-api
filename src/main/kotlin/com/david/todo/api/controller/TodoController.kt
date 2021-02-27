@@ -6,7 +6,6 @@ import com.david.todo.api.service.TodoService
 import com.david.todo.helper.logger
 import com.david.todo.translator.TodoControllerTranslator
 import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.util.UriComponentsBuilder
@@ -24,7 +23,7 @@ class TodoController(
         val LOG by logger()
     }
 
-    @GetMapping(produces = [MediaType.APPLICATION_NDJSON_VALUE])
+    @GetMapping
     fun findAll(): Flux<TodoResponse> {
         LOG.info("== Calling service to find all todo items ==")
         return service.findAll()

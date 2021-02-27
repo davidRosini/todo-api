@@ -11,13 +11,13 @@ import org.springframework.web.reactive.function.client.WebClient
 import reactor.netty.http.client.HttpClient
 
 @Configuration
-class WebClientConfig(
-    @Value("\${client.timeout.connect}") val connectTimeOut: Int,
-    @Value("\${client.timeout.read}") val readTimeout: Long
-) {
+class WebClientConfig {
 
     @Bean
-    fun webClient(): WebClient {
+    fun webClient(
+        @Value("\${client.timeout.connect}") connectTimeOut: Int,
+        @Value("\${client.timeout.read}") readTimeout: Long
+    ): WebClient {
 
         val httpClient = HttpClient.create()
             .compress(true)

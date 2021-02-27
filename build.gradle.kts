@@ -28,6 +28,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+	implementation("org.springdoc:springdoc-openapi-webflux-ui:1.5.4")
 
 	compileOnly("org.mapstruct:mapstruct:1.4.2.Final")
 
