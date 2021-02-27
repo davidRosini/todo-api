@@ -4,7 +4,7 @@ import com.david.todo.api.controller.request.TodoRequest
 import com.david.todo.api.controller.response.TodoResponse
 import com.david.todo.api.service.TodoService
 import com.david.todo.helper.logger
-import com.david.todo.translator.TodoDTOTranslator
+import com.david.todo.translator.TodoControllerTranslator
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono
 @RequestMapping("todo")
 class TodoController(
     val service: TodoService,
-    val translator: TodoDTOTranslator
+    val translator: TodoControllerTranslator
 ) {
 
     companion object {
@@ -33,7 +33,7 @@ class TodoController(
 
     @GetMapping("/{id}")
     fun findById(@PathVariable id: Long): Mono<TodoResponse> {
-        LOG.info("== Calling to find a todo by id=[$id] ==")
+        LOG.info("== Calling service to find a todo by id=[$id] ==")
         return service.findById(id)
                 .map { translator.translate(it) }
     }
@@ -43,7 +43,7 @@ class TodoController(
         uriComponentsBuilder: UriComponentsBuilder,
         @RequestBody todo: Mono<TodoRequest>
     ): Mono<ResponseEntity<TodoResponse>> {
-        LOG.info("== Calling to create a new todo ==")
+        LOG.info("== Calling service to create a new todo ==")
         return todo.flatMap { t -> service.save(translator.translate(t)) }
                 .map { t -> translator.translate(t) }
                 .doOnNext { t -> LOG.info("== Todo created response=[$t] ==") }
@@ -58,7 +58,7 @@ class TodoController(
 
     @PutMapping("/{id}")
     fun update(@PathVariable id: Long, @RequestBody todo: Mono<TodoRequest>): Mono<TodoResponse> {
-        LOG.info("== Calling to update a todo by id=[$id] ==")
+        LOG.info("== Calling service to update a todo by id=[$id] ==")
         return todo.flatMap { t -> service.update(id, translator.translate(t)) }
                 .map { t -> translator.translate(t) }
                 .doOnNext { t -> LOG.info("== Todo updated response=[$t] ==") }
@@ -66,7 +66,8 @@ class TodoController(
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun delete(@PathVariable id: String) {
-        LOG.info("== Calling to delete a todo by id=[$id] ==")
+    fun delete(@PathVariable id: Long) {
+        LOG.info("== Calling service to delete a todo by id=[$id] ==")
+        service.delete(id)
     }
 }

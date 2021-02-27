@@ -13,4 +13,6 @@ interface TodoService {
     fun save(todo: TodoDTO): Mono<TodoDTO>
 
     fun update(id: Long, todo: TodoDTO): Mono<TodoDTO>
+
+    fun delete(id: Long): Mono<Void>
 }
