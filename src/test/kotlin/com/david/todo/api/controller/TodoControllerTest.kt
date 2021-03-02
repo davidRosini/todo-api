@@ -5,7 +5,8 @@ import com.david.todo.api.controller.response.TodoResponse
 import com.david.todo.api.service.TodoService
 import com.david.todo.api.service.dto.TodoDTO
 import com.david.todo.helper.logger
-import com.david.todo.translator.TodoControllerTranslator
+import com.david.todo.translator.TodoDTOToResponse
+import com.david.todo.translator.TodoRequestToDTO
 import com.nhaarman.mockitokotlin2.any
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -35,7 +36,8 @@ class TodoControllerTest {
     @MockBean
     private lateinit var service: TodoService
 
-    private var translator = Mappers.getMapper(TodoControllerTranslator::class.java)
+    private var translatorToResponse = Mappers.getMapper(TodoDTOToResponse::class.java)
+    private var translatorToDTO = Mappers.getMapper(TodoRequestToDTO::class.java)
 
     @BeforeEach
     fun setUp() {
@@ -43,7 +45,8 @@ class TodoControllerTest {
                 .bindToController(
                         TodoController(
                                 service,
-                                translator
+                                translatorToResponse,
+                                translatorToDTO
                         )
                 )
                 .configureClient()

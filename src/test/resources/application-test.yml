@@ -1,28 +1,19 @@
-#database
 spring:
-  jpa:
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
-        use_sql_comments: true
-    hibernate:
-      ddl-auto: create
-    database-platform: org.hibernate.dialect.H2Dialect
-  datasource:
-    url: jdbc:h2:mem:tododb;DB_CLOSE_DELAY=-1
-    username: sa
-    password:
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
+  #database
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/tododb
+    username: api_todo
+    password: api@1234
 
 #webclient
 client:
   timeout:
     connect: 10000
     read: 5000
+
+#actuator
+management:
+  endpoints.web.base-path: /
 
 #documentation
 springdoc:
@@ -34,8 +25,11 @@ springdoc:
 logging:
   level:
     root: INFO
-    org.springframework.web: DEBUG
+    org.springframework:
+      web: DEBUG
+      data.r2dbc: DEBUG
     com.david.todo: DEBUG
     reactor.netty.http.client: INFO
+
   pattern:
     console: '%highlight(<<%-5level>>) %d{HH:mm:ss:SSS} [%thread] %magenta(%c{0}.%M) - %m%n'
