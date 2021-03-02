@@ -25,7 +25,6 @@ import org.springframework.test.web.reactive.server.expectBodyList
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
-
 @WebFluxTest
 @ActiveProfiles("test")
 @ContextConfiguration(classes = [TodoService::class])
