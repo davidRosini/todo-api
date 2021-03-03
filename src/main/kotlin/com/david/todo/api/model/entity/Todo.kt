@@ -4,5 +4,5 @@ import org.springframework.data.annotation.Id
 
 data class Todo(
     @Id val id: Long,
-    val item: String
+    var item: String
 )

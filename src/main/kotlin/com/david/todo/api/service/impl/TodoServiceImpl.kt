@@ -41,13 +41,14 @@ class TodoServiceImpl(
 
     override fun update(id: Long, todo: TodoDTO): Mono<TodoDTO> {
         LOG.info("== Calling DAO to update todo by id=[$id], todo=[$todo] ==")
-        return findById(id)
-            .flatMap { t -> t.item = todo.item; save(t) }
+        return repository.findById(id)
+            .flatMap { t -> t.item = todo.item; repository.save(t) }
+            .map { t -> translatorToDTO.translate(t) }
     }
 
     override fun delete(id: Long): Mono<Void> {
         LOG.info("== Calling DAO to delete todo by id=[$id] ==")
-        return findById(id)
+        return repository.findById(id)
             .flatMap { t -> repository.deleteById(t.id) }
     }
 }
