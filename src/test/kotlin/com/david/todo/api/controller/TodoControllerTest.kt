@@ -4,14 +4,21 @@ import com.david.todo.api.controller.request.TodoRequest
 import com.david.todo.api.controller.response.TodoResponse
 import com.david.todo.api.service.TodoService
 import com.david.todo.api.service.dto.TodoDTO
+import com.david.todo.exception.ExceptionResponse
+import com.david.todo.exception.ResourceNotFoundException
 import com.david.todo.helper.logger
-import com.david.todo.translator.TodoControllerTranslator
+import com.david.todo.translator.TodoDTOToResponse
+import com.david.todo.translator.TodoRequestToDTO
 import com.nhaarman.mockitokotlin2.any
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.mapstruct.factory.Mappers
 import org.mockito.Mockito.anyLong
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.atLeastOnce
+import org.mockito.Mockito.verify
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.HttpHeaders
@@ -24,10 +31,10 @@ import org.springframework.test.web.reactive.server.expectBodyList
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
-
 @WebFluxTest
 @ActiveProfiles("test")
 @ContextConfiguration(classes = [TodoService::class])
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TodoControllerTest {
 
     private lateinit var webTestClient: WebTestClient
@@ -35,15 +42,17 @@ class TodoControllerTest {
     @MockBean
     private lateinit var service: TodoService
 
-    private var translator = Mappers.getMapper(TodoControllerTranslator::class.java)
+    private var translatorToResponse = Mappers.getMapper(TodoDTOToResponse::class.java)
+    private var translatorToDTO = Mappers.getMapper(TodoRequestToDTO::class.java)
 
-    @BeforeEach
+    @BeforeAll
     fun setUp() {
         webTestClient = WebTestClient
                 .bindToController(
                         TodoController(
                                 service,
-                                translator
+                                translatorToResponse,
+                                translatorToDTO
                         )
                 )
                 .configureClient()
@@ -64,6 +73,8 @@ class TodoControllerTest {
                     LOG.info("== Response get all todo itens: {} ==", it.responseBody)
                     it.responseBody?.containsAll(getTodoResponseList())?.let { list -> assert(list) }
                 }
+
+        verify(service, atLeastOnce()).findAll()
     }
 
     @Test
@@ -80,6 +91,8 @@ class TodoControllerTest {
                     LOG.info("== Response get todo item: {} ==", it.responseBody)
                     assert(getTodoResponse() == it.responseBody)
                 }
+
+        verify(service, atLeastOnce()).findById(anyLong())
     }
 
     @Test
@@ -102,6 +115,8 @@ class TodoControllerTest {
                     LOG.info("== Response post todo item: {} ==", todoResponse)
                     assert(getTodoResponse() == todoResponse)
                 }
+
+        verify(service, atLeastOnce()).save(any())
     }
 
     @Test
@@ -119,6 +134,8 @@ class TodoControllerTest {
                     LOG.info("== Response put todo item: {} ==", it.responseBody)
                     assert(getTodoResponse() == it.responseBody)
                 }
+
+        verify(service, atLeastOnce()).update(anyLong(), any())
     }
 
     @Test
@@ -130,6 +147,8 @@ class TodoControllerTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isNoContent
+
+        verify(service, atLeastOnce()).delete(anyLong())
     }
 
     companion object {

@@ -15,7 +15,7 @@ class OpenAPIConfig {
     fun customOpenAPI(@Value("\${springdoc.version}") appVersion: String): OpenAPI {
         return OpenAPI()
             .info(
-                Info().title("Tweet API").version(appVersion)
+                Info().title("Todo API").version(appVersion)
                     .license(License().name("Apache 2.0").url("http://springdoc.org"))
             )
     }
