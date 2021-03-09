@@ -4,9 +4,12 @@ server:
 spring:
   #database
   r2dbc:
-    url: r2dbc:postgresql://localhost:5432/tododb
-    username: api_todo
-    password: api@1234
+    url: r2dbc:h2:mem:///tododb?options=DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    #url: r2dbc:postgresql://localhost:5432/tododb
+    #username: api_todo
+    #password: api@1234
 
 #webclient
 client:

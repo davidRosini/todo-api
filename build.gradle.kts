@@ -4,9 +4,10 @@ plugins {
     id("org.springframework.boot") version "2.4.3"
     id("io.spring.dependency-management") version "1.0.11.RELEASE"
     id("org.asciidoctor.convert") version "1.5.8"
-    kotlin("jvm") version "1.4.30"
-    kotlin("plugin.spring") version "1.4.30"
-    kotlin("kapt") version "1.4.30"
+    kotlin("jvm") version "1.4.31"
+    kotlin("plugin.spring") version "1.4.31"
+    kotlin("kapt") version "1.4.31"
+    kotlin("plugin.serialization") version "1.4.31"
 }
 
 group = "com.david"
@@ -28,9 +29,11 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0")
     implementation("org.springdoc:springdoc-openapi-webflux-ui:1.5.4")
 
-    runtimeOnly("io.r2dbc:r2dbc-postgresql")
+    //runtimeOnly("io.r2dbc:r2dbc-postgresql")
+    runtimeOnly("io.r2dbc:r2dbc-h2")
 
     compileOnly("org.mapstruct:mapstruct:1.4.2.Final")
 
