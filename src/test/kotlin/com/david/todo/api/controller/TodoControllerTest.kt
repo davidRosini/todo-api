@@ -10,8 +10,10 @@ import com.david.todo.helper.logger
 import com.david.todo.translator.TodoDTOToResponse
 import com.david.todo.translator.TodoRequestToDTO
 import com.nhaarman.mockitokotlin2.any
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.mapstruct.factory.Mappers
 import org.mockito.Mockito.anyLong
 import org.mockito.Mockito.`when`
@@ -32,6 +34,7 @@ import reactor.core.publisher.Mono
 @WebFluxTest
 @ActiveProfiles("test")
 @ContextConfiguration(classes = [TodoService::class])
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TodoControllerTest {
 
     private lateinit var webTestClient: WebTestClient
@@ -42,7 +45,7 @@ class TodoControllerTest {
     private var translatorToResponse = Mappers.getMapper(TodoDTOToResponse::class.java)
     private var translatorToDTO = Mappers.getMapper(TodoRequestToDTO::class.java)
 
-    @BeforeEach
+    @BeforeAll
     fun setUp() {
         webTestClient = WebTestClient
                 .bindToController(

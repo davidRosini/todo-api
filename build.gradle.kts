@@ -32,7 +32,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0")
     implementation("org.springdoc:springdoc-openapi-webflux-ui:1.5.4")
 
-    //runtimeOnly("io.r2dbc:r2dbc-postgresql")
+    runtimeOnly("io.r2dbc:r2dbc-postgresql")
     runtimeOnly("io.r2dbc:r2dbc-h2")
 
     compileOnly("org.mapstruct:mapstruct:1.4.2.Final")

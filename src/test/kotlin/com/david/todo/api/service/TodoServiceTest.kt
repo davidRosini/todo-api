@@ -7,8 +7,10 @@ import com.david.todo.api.service.impl.TodoServiceImpl
 import com.david.todo.translator.DTOTOTodo
 import com.david.todo.translator.TodoTODTO
 import com.nhaarman.mockitokotlin2.any
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import org.mapstruct.factory.Mappers
 import org.mockito.Mockito.`when`
 import org.mockito.Mockito.anyLong
@@ -25,6 +27,7 @@ import reactor.test.StepVerifier
 @WebFluxTest
 @ActiveProfiles("test")
 @ContextConfiguration(classes = [TodoService::class])
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TodoServiceTest {
 
     private lateinit var service: TodoService
@@ -35,7 +38,7 @@ class TodoServiceTest {
     private var translatorToDTO = Mappers.getMapper(TodoTODTO::class.java)
     private var translatorToTodo = Mappers.getMapper(DTOTOTodo::class.java)
 
-    @BeforeEach
+    @BeforeAll
     fun setUp() {
         service = TodoServiceImpl(repository, translatorToDTO, translatorToTodo)
     }
