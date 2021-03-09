@@ -106,8 +106,20 @@ class TodoServiceTest {
         verify(repository, atLeastOnce()).deleteById(anyLong())
     }
 
+    @Test
+    fun testFindByIdEmpty() {
+        `when`(repository.findById(ID_0_LONG)).thenReturn(Mono.empty())
+
+        StepVerifier.create(service.findById(ID_0_LONG))
+            .expectError()
+            .verify()
+
+        verify(repository, atLeastOnce()).findById(anyLong())
+    }
+
     companion object {
         const val ID_1_LONG = 1L
+        const val ID_0_LONG = 0L
 
         fun getTodo() = Todo(1, "Item 1")
         fun getTodoUpdate() = Todo(1, "Item 1 update")

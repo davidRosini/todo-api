@@ -21,7 +21,7 @@ class GlobalExceptionHandler : ErrorWebExceptionHandler {
 
     companion object {
         val LOG by logger()
-        const val UNHANDLED_CODE: Long = 9999
+        const val UNHANDLED_CODE: Int = 9999
     }
 
     override fun handle(exchange: ServerWebExchange, ex: Throwable): Mono<Void> {
