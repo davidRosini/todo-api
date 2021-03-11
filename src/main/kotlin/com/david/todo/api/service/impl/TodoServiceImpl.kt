@@ -53,6 +53,6 @@ class TodoServiceImpl(
     override fun delete(id: Long): Mono<Void> {
         LOG.info("== Calling DAO to delete todo by id=[$id] ==")
         return findById(id)
-            .flatMap { t -> repository.deleteById(t.id) }
+            .flatMap { t -> repository.deleteById(t.id!!) }
     }
 }

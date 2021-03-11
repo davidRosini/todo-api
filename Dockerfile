@@ -10,4 +10,4 @@ USER todo:todo
 
 COPY --from=build /home/gradle/src/build/libs/*.jar app.jar
 
-ENTRYPOINT ["java", "-jar", "/app.jar", "-Djava.security.egd=file:/dev/./urandom", "-Dspring.profiles.active=local", "-Xmx512m", "-Xms256m"]
+ENTRYPOINT ["java", "-jar", "/app.jar", "-Djava.security.egd=file:/dev/./urandom", "-Dspring.profiles.active=production", "-Xmx512m", "-Xms256m"]
