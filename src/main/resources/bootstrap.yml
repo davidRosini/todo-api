@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: todo-api
+  profiles: test
+  cloud:
+    config:
+      enabled: false
+---
+spring:
+  application:
+    name: todo-api
+  profiles: local
+  cloud:
+    config:
+      enabled: false
+---
+spring:
+  application:
+    name: todo-api
+  profiles: production
+  cloud:
+    config:
+      uri:
