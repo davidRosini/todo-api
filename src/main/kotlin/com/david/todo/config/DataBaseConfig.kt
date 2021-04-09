@@ -11,8 +11,8 @@ import org.springframework.r2dbc.connection.init.ResourceDatabasePopulator
 class DataBaseConfig {
 
     companion object {
-        const val RESOURCE_DB_PATH = "\\db"
-        const val RESOURCE_SCHEMA_PATH = "\\schema.sql"
+        private const val RESOURCE_DB_PATH = "\\db"
+        private const val RESOURCE_SCHEMA_PATH = "\\schema.sql"
         const val RESOURCE_MIGRATION_PATH = RESOURCE_DB_PATH + RESOURCE_SCHEMA_PATH
     }
 

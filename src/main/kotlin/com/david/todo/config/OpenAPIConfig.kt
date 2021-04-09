@@ -16,7 +16,7 @@ class OpenAPIConfig {
         return OpenAPI()
             .info(
                 Info().title("Todo API").version(appVersion)
-                    .license(License().name("Apache 2.0").url("http://springdoc.org"))
+                    .license(License().name("Apache 2.0").url("https://springdoc.orgg"))
             )
     }
 }
